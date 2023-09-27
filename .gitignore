@@ -1,3 +1,13 @@
+# Ignore all files except .go files
+*
+!*.go
 
-/*
-!/*.go
+# Ignore any build or binary files
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Ignore common Go build directories
+/bin/
+/pkg/
