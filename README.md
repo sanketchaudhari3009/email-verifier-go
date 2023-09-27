@@ -32,4 +32,5 @@ To verify a domain, simply enter the domain name when prompted:
 ```shell
 $ go run main.go
 ```
-[![Capture.png](https://i.postimg.cc/m2wXMhs3/Capture.png)](https://postimg.cc/gnxHbzrr)
+![Capture](https://github.com/sanketchaudhari3009/email-verifier-go/assets/78204805/ae083992-6d25-4490-8062-c0a5906fc66c)
+
