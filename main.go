@@ -10,21 +10,24 @@ import (
 )
 
 func main() {
+	for {
+		fmt.Print("Enter a domain (or 'exit' to quit): ")
+		scanner := bufio.NewScanner(os.Stdin)
 
-	scanner := bufio.NewScanner(os.Stdin)
-	fmt.Printf("domain, hasMX, hasSPF, spfRecord, hasDMARC, dmarcRecord\n")
+		// Read the user's input
+		scanner.Scan()
+		input := scanner.Text()
 
-	for scanner.Scan() {
-		checkDomain(scanner.Text())
+		if input == "exit" {
+			break
+		}
+
+		domain, mx, spf, spfRecord, dmarc, dmarcRecord := checkDomain(input)
+		printDomainInfo(domain, mx, spf, spfRecord, dmarc, dmarcRecord)
 	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal("Error: could not read from input: %v\n", err)
-	}
-
 }
 
-func checkDomain(domain string) {
+func checkDomain(domain string) (string, string, string, string, string, string) {
 	var hasMX, hasSPF, hasDMARC bool
 	var spfRecord, dmarcRecord string
 
@@ -66,6 +69,34 @@ func checkDomain(domain string) {
 		}
 	}
 
-	fmt.Printf("%v, %v, %v, %v, %v, %v", domain, hasMX, hasSPF, spfRecord, hasDMARC, dmarcRecord)
+	return domain, yesNo(hasMX), yesNo(hasSPF), spfRecord, yesNo(hasDMARC), dmarcRecord
+}
 
+func yesNo(flag bool) string {
+	if flag {
+		return "Yes"
+	}
+	return "No"
+}
+
+func printDomainInfo(domain, mx, spf, spfRecord, dmarc, dmarcRecord string) {
+
+	fmt.Println(strings.Repeat("___", len(dmarcRecord)/2))
+
+	fmt.Println("\nDomain:", domain)
+	fmt.Println("Has MX Record:", mx)
+
+	// Print separator line
+	fmt.Println(strings.Repeat("___", len(dmarcRecord)/2))
+
+	fmt.Println("\nHas SPF Record:", spf)
+	fmt.Println("SPF Record:", spfRecord)
+
+	// Print separator line
+	fmt.Println(strings.Repeat("___", len(dmarcRecord)/2))
+
+	fmt.Println("\nHas DMARC Record:", dmarc)
+	fmt.Println("DMARC Record:", dmarcRecord)
+
+	fmt.Println(strings.Repeat("___", len(dmarcRecord)/2))
 }
